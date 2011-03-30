@@ -34,9 +34,10 @@ class GitDataSource(object):
 
             last_commit = repository[_get_branch(request)]
             tree = repository.get_object(last_commit.tree)
-            blob = repository.get_object(tree[filename][1])
+            result = _find_entry_in_tree(repository, filename, tree)
 
-            return blob.as_raw_string()
+            if result is not None:
+                return (result[0].data, result[1])
 
         except KeyError:
             return None
@@ -93,6 +94,65 @@ def _create_commit(tree, reason='', branch=False, parents=None, request=None):
         commit.parents = parents
 
     return commit
+
+def _find_entry_in_tree(repository, identifier, tree):
+    """ Finds a nearest-match entry in the given tree. This simply means that
+    the file extension can be optionally ignored.
+
+    """
+
+    def is_dir_match(segment, entry, entries):
+        if entry[1] != segment:
+            return False
+
+        if len(entries) < 2:
+            return False
+
+        # 16384 represents the git attributes for a directory
+        if entry[0] != 16384:
+            return False
+
+        return True
+
+    def is_file_match(segment, entry, entries):
+        if len(entries) is not 1:
+            return False
+
+        if entry[1] == segment:
+            return True
+
+        dot_position = entry[1].rfind('.')
+
+        if dot_position > -1 \
+            and entry[1].startswith(segment) \
+            and (len(segment)) == dot_position:
+
+            return True
+
+        return False
+
+    def recurse_git_tree(segments, tree, full_path=[]):
+        entries = tree.entries()
+
+        for entry in entries:
+            if is_dir_match(segments[0], entry, entries):
+                full_path.append(segments[0])
+                segments = segments[1:]
+
+                return recurse_git_tree(segments,
+                                        repository.get_object(entry[2]),
+                                        full_path)
+
+                break
+ 
+            if is_file_match(segments[0], entry, entries):
+                full_path.append(entry[1])
+
+                full_path = os.sep.join(full_path)
+
+                return (repository.get_object(entry[2]), full_path)
+
+    return recurse_git_tree(identifier.split(os.sep), tree)
 
 def _get_branch(request=None):
     if request and 'flatpages.git.branch' in request.registry.settings:

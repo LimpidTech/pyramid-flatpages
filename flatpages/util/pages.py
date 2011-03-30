@@ -1,4 +1,6 @@
+from pyramid import renderers
 import os
+
 from ..data_sources.shortcuts import get_data_source
 
 def render(request, info=None):
@@ -17,14 +19,21 @@ def render(request, info=None):
         lookup_string = lookup_string[:-1]
 
     g = get_data_source(request)
-    file_contents = g.read(lookup_string)
+    file_info = g.read(lookup_string)
 
     # If file_info is None, this file doesn't exist. So, a 404 is the proper
     # response in this situation.
-    if file_contents is None:
+    if file_info is None:
         return False
 
-    request.flatpage_contents = file_contents
-    request.flatpage_filename = lookup_string
+    # Some metadata about this page is added to the request
+    request.flatpage_contents = file_info[0]
+    request.flatpage_filename = file_info[1]
+
+    # Attempt to hook into our view renderer for some additiona functionality
+    rendered_content = renderers.render(file_info[1], {}, request)
+
+    if rendered_content:
+        request.flatpage_contents = rendered_content
 
     return True

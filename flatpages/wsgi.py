@@ -29,7 +29,7 @@ def factory(global_config, **settings):
     # Adds each file extension as a renderer based on the renderers dict
     for renderer in renderers:
         for extension in renderers[renderer]:
-            config.add_renderer(extension, factory=renderer)
+            config.add_renderer('.{0}'.format(extension), factory=renderer)
 
     config.add_route('', '*subpath', handle_flatpage,
                      custom_predicates=[FlatPagesPredicate()])
