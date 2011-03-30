@@ -12,8 +12,6 @@ def render(request, info=None):
         if info:
             lookup_string = os.sep.join(info['match']['subpath'])
 
-    print lookup_string
-
     if hasattr(request, 'view_name') and len(request.view_name) > 0:
         lookup_string = os.sep.join(request.view_name, request.subpath)
 
