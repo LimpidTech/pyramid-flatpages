@@ -8,6 +8,7 @@ dependancies = [
     'pyramid',
     'repoze.tm2>=1.0b1',
     'WebError',
+    'markdown',
 ]
 
 meta_files = {
