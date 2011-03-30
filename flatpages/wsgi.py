@@ -1,5 +1,6 @@
 from pyramid.config import Configurator
 
+from .routes import FlatPagesPredicate
 from .extensibility import include_me
 from .resources import Resource
 from .views import handle_flatpage
@@ -18,6 +19,7 @@ def factory(global_config, **settings):
 
     config.include(include_me)
 
-    config.add_route('', '*subpath', handle_flatpage)
+    config.add_route('', '*subpath', handle_flatpage,
+                     custom_predicates=[FlatPagesPredicate()])
 
     return config.make_wsgi_app()
