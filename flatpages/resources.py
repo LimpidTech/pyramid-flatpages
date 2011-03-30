@@ -7,7 +7,12 @@ class Resource(object):
 
     implements(IFlatPagesRoot)
 
-    def __init__(self, request):
+    __parent__ = None
+    __name__ = None
+
+    def __init__(self, request, name=None, parent=None):
+        self.__name__ = name
+        self.__parent__ = parent
         self.request = request
 
     def __getitem__(self, name):
