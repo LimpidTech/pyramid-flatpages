@@ -8,9 +8,6 @@ dependancies = [
     'pyramid',
     'repoze.tm2>=1.0b1',
     'WebError',
-    'sqlalchemy',
-    'zope.sqlalchemy',
-    'elixir',
 ]
 
 meta_files = {
