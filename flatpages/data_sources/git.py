@@ -101,11 +101,11 @@ def _find_entry_in_tree(repository, identifier, tree):
 
     """
 
-    def is_dir_match(segment, entry, entries):
+    def is_dir_match(segment, entry, segments):
         if entry[1] != segment:
             return False
 
-        if len(entries) < 2:
+        if len(segments) < 2:
             return False
 
         # 16384 represents the git attributes for a directory
@@ -114,9 +114,11 @@ def _find_entry_in_tree(repository, identifier, tree):
 
         return True
 
-    def is_file_match(segment, entry, entries):
-        if len(entries) is not 1:
+    def is_file_match(segment, entry, segments):
+        if len(segments) is not 1:
             return False
+
+        print entry
 
         if entry[1] == segment:
             return True
@@ -135,7 +137,7 @@ def _find_entry_in_tree(repository, identifier, tree):
         entries = tree.entries()
 
         for entry in entries:
-            if is_dir_match(segments[0], entry, entries):
+            if is_dir_match(segments[0], entry, segments):
                 full_path.append(segments[0])
                 segments = segments[1:]
 
@@ -145,7 +147,7 @@ def _find_entry_in_tree(repository, identifier, tree):
 
                 break
  
-            if is_file_match(segments[0], entry, entries):
+            if is_file_match(segments[0], entry, segments):
                 full_path.append(entry[1])
 
                 full_path = os.sep.join(full_path)
