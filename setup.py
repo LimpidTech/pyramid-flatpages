@@ -13,7 +13,8 @@ dependancies = [
 meta_files = {
     'README.md': None,
     'CHANGES.md': None,
-    'CLASSIFIERS.txt': None
+    'CLASSIFIERS.txt': None,
+    'ENTRY_POINTS.ini': None,
 }
 
 # The following bit will read each index from meta_files and fill it's value
@@ -41,6 +42,7 @@ setup(name = 'pyramid-flatpages',
       install_requires = dependancies,
       tests_require = dependancies,
       test_suite = 'flatpages',
+      entry_points = meta_files['ENTRY_POINTS.ini'],
       paster_plugins = [
         'pyramid',
       ],
