@@ -1,6 +1,5 @@
 from pyramid.response import Response
 from pyramid.view import view_config
-from pyramid.exceptions import NotFound
 
 from .interfaces import IFlatPagesRoot
 from .util.pages import render
