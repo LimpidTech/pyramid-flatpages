@@ -2,6 +2,7 @@ from pyramid.config import Configurator
 
 from .extensibility import include_me
 from .resources import Resource
+from .views import handle_flatpage
 
 def factory(global_config, **settings):
     """ Application entry point factory for serving with wsgi.
@@ -16,5 +17,7 @@ def factory(global_config, **settings):
     config = Configurator(settings=settings, root_factory=Resource.factory)
 
     config.include(include_me)
+
+    config.add_route('', '*subpath', handle_flatpage)
 
     return config.make_wsgi_app()
