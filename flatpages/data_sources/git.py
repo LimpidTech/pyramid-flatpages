@@ -118,8 +118,6 @@ def _find_entry_in_tree(repository, identifier, tree):
         if len(segments) is not 1:
             return False
 
-        print entry
-
         if entry[1] == segment:
             return True
 
