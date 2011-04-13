@@ -15,7 +15,7 @@ def render(request, info=None):
     if hasattr(request, 'view_name') and len(request.view_name) > 0:
         lookup_string = os.sep.join(request.view_name, request.subpath)
 
-    if lookup_string[-1] == os.sep:
+    if len(lookup_string) > 0 and lookup_string[-1] == os.sep:
         lookup_string = lookup_string[:-1]
 
     g = get_data_source(request)
