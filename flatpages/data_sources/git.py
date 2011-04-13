@@ -102,6 +102,11 @@ def _find_entry_in_tree(repository, identifier, tree):
     """
 
     def is_dir_match(segment, entry, segments):
+        """ Used to decide whether or not the given segment matches the current
+        tree entry being iterated through git.
+
+        """
+
         if entry[1] != segment:
             return False
 
@@ -115,6 +120,11 @@ def _find_entry_in_tree(repository, identifier, tree):
         return True
 
     def is_file_match(segment, entry, segments):
+        """ Used to decide whether the given segment is a file and is a match
+        for our current search criteria.
+
+        """
+
         if len(segments) is not 1:
             return False
 
