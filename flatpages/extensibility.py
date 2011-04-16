@@ -1,3 +1,10 @@
+from .routes import FlatPagesPredicate
+from .views import handle_flatpage
+
+def flatpages_root(config, root_path=''):
+    config.add_route('', '*subpath', handle_flatpage,
+                     custom_predicates=[FlatPagesPredicate()])
+
 def include_me(config, module_name='flatpages'):
     """ Extensibility function for embedding the CMS in other Pyramid apps.
 

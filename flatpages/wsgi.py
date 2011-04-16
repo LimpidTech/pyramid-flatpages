@@ -1,9 +1,7 @@
 from pyramid.config import Configurator
 
-from .routes import FlatPagesPredicate
-from .extensibility import include_me
+from .extensibility import include_me, flatpages_root
 from .resources import Resource
-from .views import handle_flatpage
 
 renderers = {
     'flatpages.renderers.markdown.MarkdownRendererFactory': [
@@ -31,7 +29,6 @@ def factory(global_config, **settings):
         for extension in renderers[renderer]:
             config.add_renderer('.{0}'.format(extension), factory=renderer)
 
-    config.add_route('', '*subpath', handle_flatpage,
-                     custom_predicates=[FlatPagesPredicate()])
+    flatpages_root(config)
 
     return config.make_wsgi_app()
