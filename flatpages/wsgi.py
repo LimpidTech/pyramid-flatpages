@@ -3,13 +3,6 @@ from pyramid.config import Configurator
 from .extensibility import include_me, flatpages_root
 from .resources import Resource
 
-renderers = {
-    'flatpages.renderers.markdown.MarkdownRendererFactory': [
-        'md',
-        'markdown'
-    ],
-}
-
 def factory(global_config, **settings):
     """ Application entry point factory for serving with wsgi.
 
@@ -23,11 +16,6 @@ def factory(global_config, **settings):
     config = Configurator(settings=settings, root_factory=Resource.factory)
 
     config.include(include_me)
-
-    # Adds each file extension as a renderer based on the renderers dict
-    for renderer in renderers:
-        for extension in renderers[renderer]:
-            config.add_renderer('.{0}'.format(extension), factory=renderer)
 
     flatpages_root(config)
 

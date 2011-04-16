@@ -1,7 +1,15 @@
 from .routes import FlatPagesPredicate
 from .views import handle_flatpage
+from .renderers.defaults import renderers as default_renderers
 
-def flatpages_root(config, root_path=''):
+def flatpages_root(config, insert_renderers=True, root_path=''):
+
+    # Adds each file extension as a renderer based on the renderers dict
+    if insert_renderers is True:
+        for renderer in default_renderers:
+            for extension in default_renderers[renderer]:
+                config.add_renderer('.{0}'.format(extension), factory=renderer)
+
     config.add_route('', '*subpath', handle_flatpage,
                      custom_predicates=[FlatPagesPredicate()])
 
