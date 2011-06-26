@@ -29,7 +29,7 @@ for filename in meta_files:
         pass
 
 setup(name = 'pyramid-flatpages',
-      version = '0.0.1',
+      version = '0.0.1-mdfix',
       description = 'Manage your site\'s pages using configurable data sources for storage.',
       long_description = meta_files['README.md'] + '\n\n' + meta_files['CHANGES.md'],
       classifiers = meta_files['CLASSIFIERS.txt'],
