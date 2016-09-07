@@ -8,7 +8,7 @@ class FlatPagesPredicate(object):
     subdir = None
 
     def __call__(self, info, request):
-        """ Calls our render method (which attacks flatfile_contents to the
+        """ Calls our render method (which attaches flatfile_contents to the
         request) and returns True or False depending on whether this specific
         file was found in our data store.
 
